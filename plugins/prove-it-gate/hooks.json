@@ -5,7 +5,7 @@
       {
         "type": "command",
         "bash": "node \"${PLUGIN_ROOT:-${COPILOT_PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT}}/scripts/prove-it.mjs\" session-start",
-        "powershell": "node \"$env:PLUGIN_ROOT/scripts/prove-it.mjs\" session-start",
+        "powershell": "$r = @($env:PLUGIN_ROOT, $env:COPILOT_PLUGIN_ROOT, $env:CLAUDE_PLUGIN_ROOT) | Where-Object { $_ } | Select-Object -First 1; node (Join-Path $r 'scripts/prove-it.mjs') session-start",
         "timeoutSec": 5
       }
     ],
@@ -13,7 +13,7 @@
       {
         "type": "command",
         "bash": "node \"${PLUGIN_ROOT:-${COPILOT_PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT}}/scripts/prove-it.mjs\" prompt",
-        "powershell": "node \"$env:PLUGIN_ROOT/scripts/prove-it.mjs\" prompt",
+        "powershell": "$r = @($env:PLUGIN_ROOT, $env:COPILOT_PLUGIN_ROOT, $env:CLAUDE_PLUGIN_ROOT) | Where-Object { $_ } | Select-Object -First 1; node (Join-Path $r 'scripts/prove-it.mjs') prompt",
         "timeoutSec": 5
       }
     ],
@@ -21,7 +21,7 @@
       {
         "type": "command",
         "bash": "node \"${PLUGIN_ROOT:-${COPILOT_PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT}}/scripts/prove-it.mjs\" post-tool",
-        "powershell": "node \"$env:PLUGIN_ROOT/scripts/prove-it.mjs\" post-tool",
+        "powershell": "$r = @($env:PLUGIN_ROOT, $env:COPILOT_PLUGIN_ROOT, $env:CLAUDE_PLUGIN_ROOT) | Where-Object { $_ } | Select-Object -First 1; node (Join-Path $r 'scripts/prove-it.mjs') post-tool",
         "timeoutSec": 5
       }
     ],
@@ -29,7 +29,7 @@
       {
         "type": "command",
         "bash": "node \"${PLUGIN_ROOT:-${COPILOT_PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT}}/scripts/prove-it.mjs\" post-tool-failure",
-        "powershell": "node \"$env:PLUGIN_ROOT/scripts/prove-it.mjs\" post-tool-failure",
+        "powershell": "$r = @($env:PLUGIN_ROOT, $env:COPILOT_PLUGIN_ROOT, $env:CLAUDE_PLUGIN_ROOT) | Where-Object { $_ } | Select-Object -First 1; node (Join-Path $r 'scripts/prove-it.mjs') post-tool-failure",
         "timeoutSec": 5
       }
     ],
@@ -37,7 +37,7 @@
       {
         "type": "command",
         "bash": "node \"${PLUGIN_ROOT:-${COPILOT_PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT}}/scripts/prove-it.mjs\" stop",
-        "powershell": "node \"$env:PLUGIN_ROOT/scripts/prove-it.mjs\" stop",
+        "powershell": "$r = @($env:PLUGIN_ROOT, $env:COPILOT_PLUGIN_ROOT, $env:CLAUDE_PLUGIN_ROOT) | Where-Object { $_ } | Select-Object -First 1; node (Join-Path $r 'scripts/prove-it.mjs') stop",
         "timeoutSec": 10
       }
     ]

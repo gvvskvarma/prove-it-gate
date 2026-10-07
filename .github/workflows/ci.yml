@@ -17,3 +17,11 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: npm test
       - run: npm run validate
+      - name: PowerShell hook smoke test
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: ./scripts/smoke-hook.ps1
+      - name: pwsh hook smoke test
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./scripts/smoke-hook.ps1
