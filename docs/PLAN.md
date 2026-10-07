@@ -27,7 +27,7 @@ Legend for confidence tags used throughout:
 ---------------------------------------------------------------------
 ## 0. Ground rules (read first)
 
-1. **Personal, universal project.** This is a personal open-source project for any team using Copilot, built on a personal machine. It lives in its own public repo, `gvvskvarma/prove-it-gate`. Use neutral sandbox projects for demos and benchmarks.
+1. **Open source, tool-agnostic.** Prove It is an independent MIT-licensed project for any team using GitHub Copilot (CLI and VS Code agent mode). Demos and benchmarks use neutral, public sample projects only.
 2. **No secrets, no telemetry.** The plugin must not send data anywhere. All state is local files.
 3. **Honest claims only.** The plugin proves "these commands ran and exited N", not "the change is correct". Every doc/README sentence must respect that.
 4. **Opt-in and low-friction.** Forced extra agent turns cost tokens and annoy users. Default must be conservative (see §6).
