@@ -23,7 +23,7 @@ for (const p of market.plugins ?? []) {
   for (const s of ["scripts/prove-it.mjs", "skills/prove-it/SKILL.md"]) {
     if (!existsSync(join(dir, s))) errors.push(`${p.name}: missing ${s}`);
   }
-  const skill = readFileSync(join(dir, "skills/prove-it/SKILL.md"), "utf8");
+  const skill = readFileSync(join(dir, "skills/prove-it/SKILL.md"), "utf8").replace(/\r\n/g, "\n");
   if (!/^---\nname: prove-it\ndescription: .+\n---/m.test(skill)) errors.push("SKILL.md frontmatter must have name: prove-it and a description");
 }
 
