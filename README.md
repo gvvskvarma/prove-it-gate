@@ -1,4 +1,4 @@
-# prove-it
+# Prove It
 
 A verification gate for coding agents in **GitHub Copilot CLI** and **VS Code agent mode**.
 
@@ -11,8 +11,8 @@ It proves that verification commands ran after the last edit, and shows how they
 
 ## Install (Copilot CLI)
 ```
-copilot plugin marketplace add gvvskvarma/prove-it
-copilot plugin install prove-it@prove-it
+copilot plugin marketplace add gvvskvarma/prove-it-gate
+copilot plugin install prove-it-gate@prove-it-gate
 ```
 
 ## Modes

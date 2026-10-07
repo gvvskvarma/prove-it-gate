@@ -4,11 +4,11 @@ import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
-import { classify } from "../plugins/prove-it/scripts/core/classify.mjs";
-import { DEFAULTS, isIgnored } from "../plugins/prove-it/scripts/core/config.mjs";
-import { decide } from "../plugins/prove-it/scripts/core/decide.mjs";
-import { normalize } from "../plugins/prove-it/scripts/core/normalize.mjs";
-import { run } from "../plugins/prove-it/scripts/prove-it.mjs";
+import { classify } from "../plugins/prove-it-gate/scripts/core/classify.mjs";
+import { DEFAULTS, isIgnored } from "../plugins/prove-it-gate/scripts/core/config.mjs";
+import { decide } from "../plugins/prove-it-gate/scripts/core/decide.mjs";
+import { normalize } from "../plugins/prove-it-gate/scripts/core/normalize.mjs";
+import { run } from "../plugins/prove-it-gate/scripts/prove-it.mjs";
 
 const enforce = { ...DEFAULTS, mode: "enforce" };
 const prompt = { kind: "prompt" };
@@ -84,6 +84,6 @@ test("end to end through run() with a temp data dir", () => {
 });
 
 test("CLI entry fails open on garbage input", () => {
-  const out = execFileSync(process.execPath, ["plugins/prove-it/scripts/prove-it.mjs", "stop"], { input: "not json", env: { ...process.env, PROVE_IT_DATA: mkdtempSync(join(tmpdir(), "p-")) } });
+  const out = execFileSync(process.execPath, ["plugins/prove-it-gate/scripts/prove-it.mjs", "stop"], { input: "not json", env: { ...process.env, PROVE_IT_DATA: mkdtempSync(join(tmpdir(), "p-")) } });
   assert.doesNotThrow(() => JSON.parse(out.toString() || "{}"));
 });

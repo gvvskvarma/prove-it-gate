@@ -1,5 +1,5 @@
 {
-  "name": "prove-it",
+  "name": "prove-it-gate",
   "version": "0.1.0",
   "private": true,
   "description": "Dev-only package for the prove-it plugin. The plugin has zero runtime dependencies.",

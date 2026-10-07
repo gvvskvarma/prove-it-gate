@@ -1,5 +1,5 @@
 {
-  "name": "prove-it",
+  "name": "prove-it-gate",
   "description": "Verification gate for coding agents: blocks 'done' after edits until a test/lint/typecheck/build has run, and leaves a receipt of what was and was not verified.",
   "version": "0.1.0",
   "author": { "name": "gvvskvarma" },

@@ -1,13 +1,13 @@
 {
-  "name": "prove-it",
+  "name": "prove-it-gate",
   "owner": { "name": "gvvskvarma" },
   "metadata": { "description": "Enforced verification gate for Copilot CLI and VS Code agent mode", "version": "0.1.0" },
   "plugins": [
     {
-      "name": "prove-it",
+      "name": "prove-it-gate",
       "description": "Blocks 'done' after edits until a test/lint/typecheck has run; emits a receipt.",
       "version": "0.1.0",
-      "source": "./plugins/prove-it",
+      "source": "./plugins/prove-it-gate",
       "license": "MIT",
       "keywords": ["verification", "hooks", "testing"]
     }
