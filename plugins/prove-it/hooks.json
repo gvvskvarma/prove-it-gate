@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "command",
+        "bash": "node \"${PLUGIN_ROOT:-${COPILOT_PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT}}/scripts/prove-it.mjs\" session-start",
+        "powershell": "node \"$env:PLUGIN_ROOT/scripts/prove-it.mjs\" session-start",
+        "timeoutSec": 5
+      }
+    ],
+    "userPromptSubmitted": [
+      {
+        "type": "command",
+        "bash": "node \"${PLUGIN_ROOT:-${COPILOT_PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT}}/scripts/prove-it.mjs\" prompt",
+        "powershell": "node \"$env:PLUGIN_ROOT/scripts/prove-it.mjs\" prompt",
+        "timeoutSec": 5
+      }
+    ],
+    "postToolUse": [
+      {
+        "type": "command",
+        "bash": "node \"${PLUGIN_ROOT:-${COPILOT_PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT}}/scripts/prove-it.mjs\" post-tool",
+        "powershell": "node \"$env:PLUGIN_ROOT/scripts/prove-it.mjs\" post-tool",
+        "timeoutSec": 5
+      }
+    ],
+    "postToolUseFailure": [
+      {
+        "type": "command",
+        "bash": "node \"${PLUGIN_ROOT:-${COPILOT_PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT}}/scripts/prove-it.mjs\" post-tool-failure",
+        "powershell": "node \"$env:PLUGIN_ROOT/scripts/prove-it.mjs\" post-tool-failure",
+        "timeoutSec": 5
+      }
+    ],
+    "agentStop": [
+      {
+        "type": "command",
+        "bash": "node \"${PLUGIN_ROOT:-${COPILOT_PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT}}/scripts/prove-it.mjs\" stop",
+        "powershell": "node \"$env:PLUGIN_ROOT/scripts/prove-it.mjs\" stop",
+        "timeoutSec": 10
+      }
+    ]
+  }
+}

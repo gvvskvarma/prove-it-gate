@@ -1,0 +1,13 @@
+{
+  "name": "prove-it",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Dev-only package for the prove-it plugin. The plugin has zero runtime dependencies.",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node --test",
+    "validate": "node scripts/validate.mjs"
+  },
+  "license": "MIT"
+}
