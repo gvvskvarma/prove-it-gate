@@ -60,6 +60,17 @@ test("classifies Copilot CLI, VS Code and Claude payload shapes", () => {
   assert.deepEqual(classify(read).map(e => e.kind), ["other"]);
 });
 
+test("real Copilot CLI PowerShell commands from the Windows spike", () => {
+  const ps = command => classify(normalize({ toolName: "powershell", toolArgs: { command } }, "post-tool")).map(e => e.kind);
+  // Setup command whose quoted value merely contains "node --test": not a verification.
+  assert.deepEqual(ps("npm init -y; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; npm pkg set 'scripts.test=node --test'"), ["other"]);
+  // .NET file writes are edits; the "=>" inside the quoted file content is not a redirect.
+  assert.deepEqual(ps("[System.IO.File]::WriteAllText((Join-Path (Get-Location) 'math.mjs'), 'export const add = (a, b) => a + b;', [System.Text.UTF8Encoding]::new($false))"), ["edit"]);
+  assert.deepEqual(ps('node -e "const f = x => x; console.log(f(1))"'), ["other"]);
+  assert.deepEqual(ps("npm test"), ["verify"]);
+  assert.deepEqual(ps('Set-Content math.mjs "x"; npm test'), ["edit", "verify"]);
+});
+
 test("ignorePaths globs", () => {
   assert.ok(isIgnored("/repo/docs/x/y.js", DEFAULTS.ignorePaths, "/repo"));
   assert.ok(isIgnored("README.md", DEFAULTS.ignorePaths));

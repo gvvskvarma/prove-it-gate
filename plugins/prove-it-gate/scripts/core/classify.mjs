@@ -31,10 +31,18 @@ const SHELL_WRITE_PATTERNS = [
   /\bsed\s+(-[a-zA-Z]*i|--in-place)/,
   /(^|[^0-9&>])>{1,2}\s*(?!\/dev\/null|&|\$null)[\w./~-]/,
   /\btee\b/,
-  /\b(Set-Content|Add-Content|Out-File|New-Item)\b/,
+  /\b(Set-Content|Add-Content|Out-File|New-Item|Copy-Item|Move-Item|Remove-Item)\b/,
+  /\[(System\.)?IO\.File\]::(WriteAll|AppendAll|Create|Copy|Move|Delete)/,
   /\b(git\s+(apply|checkout\s+--|restore)|patch\s+-p)\b/,
   /\b(mv|cp|rm)\s+/,
 ];
+
+// Quoted text is data, not commands: `npm pkg set "scripts.test=node --test"`
+// is not a test run, and `"(a, b) => a + b"` is not a redirect. Match
+// patterns against the command with quoted strings blanked out.
+export function stripQuoted(command) {
+  return command.replace(/@'[\s\S]*?'@|@"[\s\S]*?"@|"(?:[^"\\`]|[\\`][\s\S])*"|'[^']*'/g, '""');
+}
 
 export function commandOf(args) {
   if (!args || typeof args !== "object") return "";
@@ -66,13 +74,14 @@ export function classify(evt, config = {}) {
   }
   if (SHELL_TOOLS.has(evt.tool)) {
     const command = commandOf(evt.args);
+    const bare = stripQuoted(command);
     const out = [];
-    if (SHELL_WRITE_PATTERNS.some(re => re.test(command))) {
+    if (SHELL_WRITE_PATTERNS.some(re => re.test(bare))) {
       out.push({ ts, kind: "edit", tool: evt.tool, files: [], command: command.slice(0, 300) });
     }
     const verify = [...VERIFY_PATTERNS, ...compile(config.verifyPatterns)];
     const custom = (config.verifyCommands ?? []).some(c => command.includes(c));
-    if (custom || verify.some(re => re.test(command))) {
+    if (custom || verify.some(re => re.test(bare))) {
       out.push({ ts, kind: "verify", tool: evt.tool, command: command.slice(0, 300), exit: exitCodeOf(evt.resultText, evt.failed) });
     }
     return out.length ? out : [{ ts, kind: "other", tool: evt.tool }];
