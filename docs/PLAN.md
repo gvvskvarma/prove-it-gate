@@ -1,6 +1,6 @@
 # "Prove It" — Copilot CLI Verification-Gate Plugin: A-to-Z Plan
 
-Status: PLAN ONLY. No code has been written. Created 2026-10-05.
+Status: v0.1 scaffold implemented (2026-10-07). Created 2026-10-05. docs/RESEARCH.md amends this plan; where they differ, RESEARCH.md wins.
 Audience: any session (human or agent) picking this up cold. Read top to bottom once, then use the checklists.
 
 ## HANDOFF: how to use this file with ANY AI tool or session
@@ -9,7 +9,7 @@ This file is tool-neutral. It can be given to GitHub Copilot CLI, Claude Code, C
 
 Paste this preamble first:
 
-> You are continuing a project from the attached plan (`prove-it-plugin-plan.md`). Read it fully. Do not assume anything tagged [ASSUMED] or [UNKNOWN]; verify it first. Work on ONE phase at a time, starting at the first unchecked box in section 6. Do all work in the new public repo, never in any employer workspace. Never include employer/internal data. After each phase, update the checkboxes and write results to `docs/SPIKE-RESULTS.md` (dated, with tool and version used). Report what you verified versus what you inferred. Stop at every STOP/DECIDE point and ask the human.
+> You are continuing a project from the attached plan (`prove-it-plugin-plan.md`). Read it fully. Do not assume anything tagged [ASSUMED] or [UNKNOWN]; verify it first. Work on ONE phase at a time, starting at the first unchecked box in section 6. Do all work in the public repo `gvvskvarma/prove-it-gate`. After each phase, update the checkboxes and write results to `docs/SPIKE-RESULTS.md` (dated, with tool and version used). Report what you verified versus what you inferred. Stop at every STOP/DECIDE point and ask the human.
 
 Rules for any tool picking this up:
 - Re-fetch the sources in section 12 before trusting any platform fact; docs change often. Facts are dated 2026-10-05.
@@ -27,11 +27,10 @@ Legend for confidence tags used throughout:
 ---------------------------------------------------------------------
 ## 0. Ground rules (read first)
 
-1. **Separate public repo.** This plugin lives in its own public GitHub repo, outside any employer workspace. Nothing from the author's employer (route names, worker names, hostnames, Splunk queries, tickets, internal URLs, screenshots) may appear in code, tests, docs, demo GIFs, or commit history. Use a neutral sandbox project for demos.
-2. **Check employer policy before publishing** (open-source contribution / IP approval). This is the author's responsibility and is not researched here. [UNKNOWN]
-3. **No secrets, no telemetry.** The plugin must not send data anywhere. All state is local files.
-4. **Honest claims only.** The plugin proves "these commands ran and exited N", not "the change is correct". Every doc/README sentence must respect that.
-5. **Opt-in and low-friction.** Forced extra agent turns cost tokens and annoy users. Default must be conservative (see §6).
+1. **Personal, universal project.** This is a personal open-source project for any team using Copilot, built on a personal machine. It lives in its own public repo, `gvvskvarma/prove-it-gate`. Use neutral sandbox projects for demos and benchmarks.
+2. **No secrets, no telemetry.** The plugin must not send data anywhere. All state is local files.
+3. **Honest claims only.** The plugin proves "these commands ran and exited N", not "the change is correct". Every doc/README sentence must respect that.
+4. **Opt-in and low-friction.** Forced extra agent turns cost tokens and annoy users. Default must be conservative (see §6).
 
 ---------------------------------------------------------------------
 ## 1. Problem statement and goal
@@ -225,11 +224,10 @@ Add to Phase 2: build `core/` first, test it with plain fixtures, then the Copil
 - [ ] Write a differentiation note (5 lines max) in `docs/DESIGN.md`.
 - [ ] Re-read awesome-copilot CONTRIBUTING "What We Don't Accept" and confirm the idea is not a duplicate-of-model-strength.
 - [ ] Decide GO / NO-GO / CONTRIBUTE-TO-EXISTING.
-- [ ] Confirm employer open-source policy. Get written OK if required.
 - [ ] Choose a repo name; check it's free on GitHub; check no trademark collision with "Copilot" usage (don't name it "GitHub Copilot ..."; use "for Copilot CLI" in descriptions only).
 
 ### Phase 1 — Platform spike on a throwaway project (1–2 days)
-Goal: replace every [ASSUMED] tag with an observed fact. Do this in a scratch dir, NOT in any employer workspace.
+Goal: replace every [ASSUMED] tag with an observed fact. Do this in a scratch dir.
 - [ ] `copilot --version`; record version used. Read `copilot plugin --help` and `copilot plugin install --help`; check for a `validate` subcommand.
 - [ ] Fetch the "Creating a plugin for GitHub Copilot CLI" doc (`.../plugins-creating`) and the rest of the plugin-reference page (truncated earlier at 9000 chars) for the exact `plugin.json` schema, `hooks.json` location, and path-variable names (`${CLAUDE_PLUGIN_ROOT}`-style?). [UNKNOWN]
 - [ ] Write a minimal plugin with `hooks.json` containing one `postToolUse` command hook that dumps stdin to a file. Install via `copilot plugin install ./path`. Run a trivial task. Inspect the dump.
@@ -273,7 +271,7 @@ Goal: replace every [ASSUMED] tag with an observed fact. Do this in a scratch di
 
 ### Phase 4 — Dogfood and measure (3–5 days elapsed)
 Purpose: produce the evidence that justifies the plugin (and the awesome-copilot pitch).
-- [ ] Build a benchmark of 10–20 small, neutral tasks across 2–3 languages (e.g., fix an off-by-one, add a function + test, rename a symbol, fix a failing test). Public/open-source sample repos or purpose-built fixtures only — no employer code.
+- [ ] Build a benchmark of 10–20 small, neutral tasks across 2–3 languages (e.g., fix an off-by-one, add a function + test, rename a symbol, fix a failing test). Public/open-source sample repos or purpose-built fixtures only.
 - [ ] Run each task N>=5 times in two arms: plugin OFF vs plugin ON (`enforce`). Same model, same prompt. (Auto mode may switch models — pin a model for the experiment.)
 - [ ] Metrics: (a) % of runs where agent edited code and ended without any verification command; (b) % of runs where final claim of "tests pass" had no matching executed command; (c) extra turns and tokens per run (cost); (d) final correctness (hidden tests); (e) false-block rate (blocked when verification was unnecessary).
 - [ ] Record results honestly, including no-effect and negative results. Publish raw run logs in `docs/benchmarks/`.
@@ -285,7 +283,7 @@ Purpose: produce the evidence that justifies the plugin (and the awesome-copilot
 - [ ] Install snippet (verify exact commands in Phase 1):
   - `copilot plugin marketplace add <owner>/<repo>`
   - `copilot plugin install prove-it@<marketplace-name>`
-- [ ] Record demo GIF (scratch project; no employer material): agent edits code -> tries to finish -> blocked -> runs tests -> receipt. Keep < 30 s, < 5 MB. Tools: `vhs`, `asciinema`+`agg`, or ScreenToGif.
+- [ ] Record demo GIF (scratch project): agent edits code -> tries to finish -> blocked -> runs tests -> receipt. Keep < 30 s, < 5 MB. Tools: `vhs`, `asciinema`+`agg`, or ScreenToGif.
 - [ ] `SECURITY.md` (what the hooks read/write; no network; local files only), `CONTRIBUTING.md`, issue templates, CODE_OF_CONDUCT (Contributor Covenant), CHANGELOG (Keep a Changelog).
 - [ ] `docs/DESIGN.md`: limitations (verification != correctness; shell-edit gap; non-git dirs), threat model (a hook runs arbitrary commands on user machine -> keep scripts tiny and auditable, no `eval`, no network).
 
@@ -334,7 +332,6 @@ Pick path A (preferred first) or B.
 - **Platform churn** -> weekly compatibility CI; minimal surface (2–4 hooks).
 - **Security perception (hooks run code)** -> zero deps, no network, tiny readable scripts, SECURITY.md, no `eval`/dynamic requires.
 - **Hook loop / trapping the agent** -> `stop_hook_active` guard, `maxBlocksPerTurn`, fail-open on every error.
-- **Employer IP/policy** -> Phase 0 check; separate repo; no internal data.
 - **Name/trademark** -> avoid "GitHub Copilot" as the product name.
 
 ---------------------------------------------------------------------
@@ -410,12 +407,11 @@ try {
 ---------------------------------------------------------------------
 ## 10. Information needed from the user before starting
 
-1. Confirmation that this is a personal public repo (and employer policy clearance).
-2. GitHub account/org for the repo, and chosen repo/plugin name.
-3. Target OS list for testing (Windows confirmed available; macOS/Linux via CI only?).
-4. Whether Node >= 18 is acceptable as a runtime requirement.
-5. Preferred default mode (`warn` proposed).
-6. Budget/time: phases total ~2–3 weeks elapsed part-time, dominated by Phase 4 data collection.
+1. Repo and name: decided, `gvvskvarma/prove-it-gate` (display name "Prove It").
+2. Target OS list for testing (Windows confirmed available; macOS/Linux via CI only?).
+3. Whether Node >= 18 is acceptable as a runtime requirement.
+4. Preferred default mode (`warn` proposed).
+5. Budget/time: phases total ~2–3 weeks elapsed part-time, dominated by Phase 4 data collection.
 
 ---------------------------------------------------------------------
 ## 11. How the pitch is argued (for README, awesome-copilot form, blog)
